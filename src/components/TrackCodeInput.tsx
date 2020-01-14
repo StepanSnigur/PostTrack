@@ -18,6 +18,10 @@ const TrackInput = styled.input`
     border: none;
     padding: 10px 30px;
     font-size: 36px;
+    
+    &::placeholder {
+        font-size: 26px;
+    }
 `
 const TrackInputButton = styled.button`
     display: block;
@@ -75,7 +79,7 @@ const TrackCodeInput: React.FC<ITrackCodeInput> = (props) => {
             <TrackInput
                 value={trackInputValue}
                 onChange={handleChange}
-                placeholder="Формат"
+                placeholder="Например: RF727913178SG"
             />
             <TrackInputButton>Отследить</TrackInputButton>
         </TrackInputWrapper>

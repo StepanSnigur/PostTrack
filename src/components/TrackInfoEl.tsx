@@ -1,12 +1,20 @@
 import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 
+import { ITrackEventData } from '../Interfaces/Interfaces';
+
 const TrackInfoElWrapper = styled.div`
     width: 100%;
     height: auto;
     padding-top: 20px;
     padding-bottom: 20px;
     border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: .3s;
+    
+    &:hover {
+        background: #eee;
+    }
     
     h2, span, h5, p {
         margin: 0;
@@ -32,25 +40,6 @@ const TrackInfoElWrapper = styled.div`
     }
 `
 
-interface ITrackEventData {
-    id: string,
-    eventDateTime: string,
-    operationDateTime: string,
-    operationAttribute: string,
-    operationType: string,
-    operationPlacePostalCode: string,
-    operationPlaceName: string,
-    itemWeight: string,
-    source: string,
-    serviceName: string,
-    operationAttributeInformation: string,
-    operationAttributeOriginal: string,
-    operationTypeOriginal: string,
-    operationPlaceNameOriginal: string,
-    operationAttributeTranslated: string,
-    operationTypeTranslated: string,
-    operationPlaceNameTranslated: string
-}
 interface ITrackInfoEl {
     trackEventData: ITrackEventData
 }
@@ -66,16 +55,18 @@ const TrackInfoEl: React.FC<ITrackInfoEl> = ({ trackEventData }) => {
     } = trackEventData;
 
     return (
-        <TrackInfoElWrapper
-            isOpened={isOpened}
-            elHeight={TrackInfoEl.current ? TrackInfoEl.current.scrollHeight : 0}
-            onClick={() => changeIsOpened(!isOpened)}
-        >
-            <h5>{operationPlaceNameTranslated}</h5>
-            <h2>{operationAttributeTranslated}</h2>
-            <span>{operationDateTime}</span>
-            <p ref={TrackInfoEl}>{operationAttributeInformation}</p>
-        </TrackInfoElWrapper>
+        <>
+            {operationAttributeTranslated && <TrackInfoElWrapper
+                isOpened={isOpened}
+                elHeight={TrackInfoEl.current ? TrackInfoEl.current.scrollHeight : 0}
+                onClick={() => changeIsOpened(!isOpened)}
+            >
+                <h5>{operationPlaceNameTranslated}</h5>
+                <h2>{operationAttributeTranslated}</h2>
+                <span>{operationDateTime}</span>
+                <p ref={TrackInfoEl}>{operationAttributeInformation}</p>
+            </TrackInfoElWrapper>}
+        </>
     )
 }
 

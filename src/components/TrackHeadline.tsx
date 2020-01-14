@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { ITrackInfoEl } from '../Interfaces/Interfaces';
+
 const TrackHeadlineWrapper = styled.div`
     width: 100%;
     height: auto;
@@ -14,15 +16,6 @@ const TrackHeadlineWrapper = styled.div`
     }
 `
 
-interface ITrackInfoEl {
-    fromCountry: string,
-    destinationCountry: string,
-    trackUpdateDateTime: string,
-    itemWeight: number,
-    daysInTransit: number,
-    maxDeliveryDays: number
-}
-
 const TrackHeadline: React.FC<ITrackInfoEl> = (props) => {
     let {
         fromCountry,
@@ -34,7 +27,7 @@ const TrackHeadline: React.FC<ITrackInfoEl> = (props) => {
     } = props;
     return (
         <TrackHeadlineWrapper>
-            <h3>Точка отправки: {fromCountry}, Пункт назначения: {destinationCountry}</h3>
+            <h3>Точка отправки: {fromCountry || 'Неизвестно'}, Пункт назначения: {destinationCountry || 'Неизвестно'}</h3>
             <h3>В пути: {daysInTransit} дней, максимальный срок перевозки {maxDeliveryDays} дней</h3>
             <h3>Вес посылки: {itemWeight}</h3>
             <h4>Данные обновлены: {trackUpdateDateTime}</h4>

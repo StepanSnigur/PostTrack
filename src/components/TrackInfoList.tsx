@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { ITrackEventData, ITrackState, IMainTrackData } from '../Interfaces/Interfaces';
+
 import TrackHeadline from './TrackHeadline';
 import TrackInfoEl from './TrackInfoEl';
 
@@ -13,47 +15,16 @@ const TrackInfoWrapper = styled.div`
     background: #fff;
 `
 
-interface ITrackIvent {
-    id: string,
-    eventDateTime: string,
-    operationDateTime: string,
-    operationAttribute: string,
-    operationType: string,
-    operationPlacePostalCode: string,
-    operationPlaceName: string,
-    itemWeight: string,
-    source: string,
-    serviceName: string,
-    operationAttributeInformation: string,
-    operationAttributeOriginal: string,
-    operationTypeOriginal: string,
-    operationPlaceNameOriginal: string,
-    operationAttributeTranslated: string,
-    operationTypeTranslated: string,
-    operationPlaceNameTranslated: string
-}
-interface IData {
-    events: ITrackIvent[],
-    fromCountry: string,
-    destinationCountry: string,
-    trackUpdateDateTime: string,
-    itemWeight: number,
-    daysInTransit: number
-}
-interface ITrackState {
-    minDeliveryDays: number,
-    averageDeliveryDays: number,
-    maxDeliveryDays: number,
-    type: string
-}
 interface ITrackInfoList {
-    trackData: IData,
-    deliveredStat: ITrackState
+    trackData: IMainTrackData,
+    deliveredStat: ITrackState,
+    id?: string
 }
 
-const TrackInfoList: React.FC<ITrackInfoList> = ({ trackData, deliveredStat }) => {
+const TrackInfoList: React.FC<ITrackInfoList> = ({ trackData, deliveredStat, id }) => {
     return (
-        <TrackInfoWrapper>
+        <>
+            {id && <TrackInfoWrapper>
             <TrackHeadline
                 fromCountry={trackData.fromCountry}
                 destinationCountry={trackData.destinationCountry}
@@ -63,16 +34,17 @@ const TrackInfoList: React.FC<ITrackInfoList> = ({ trackData, deliveredStat }) =
                 maxDeliveryDays={deliveredStat.maxDeliveryDays}
             />
             {
-                trackData.events.map(trackState => {
+                trackData.events.map((trackState: ITrackEventData) => {
                     return (
                         <TrackInfoEl
-                            key={trackState.id}
-                            trackEventData={trackState}
+                            key={trackState.id!}
+                            trackEventData={trackState!}
                         />
                     )
                 })
             }
-        </TrackInfoWrapper>
+            </TrackInfoWrapper>}
+        </>
     )
 }
 

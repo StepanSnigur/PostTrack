@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Service from '../Service/Service';
 
+import { ITrackData } from '../Interfaces/Interfaces';
+
 const TrackInputWrapper = styled.form`
     display: flex;
     margin: 0 auto;
@@ -40,12 +42,6 @@ interface ITrackCodeInput {
     setError(message: string | boolean): void
 }
 
-interface ITrackData {
-    status?: string,
-    id?: string,
-    message?: string
-}
-
 const TrackCodeInput: React.FC<ITrackCodeInput> = (props) => {
     const [trackInputValue, setTrackInputValue] = useState('');
 
@@ -55,7 +51,6 @@ const TrackCodeInput: React.FC<ITrackCodeInput> = (props) => {
             props.setError(false);
 
             let data: ITrackData = await Service.getTrackInfo(trackCode);
-            console.log(data)
             if (data.status === 'error') throw new Error(data.message);
 
             props.loadTrackInfo(data);

@@ -53,6 +53,11 @@ const TrackCodeInput: React.FC<ITrackCodeInput> = (props) => {
             let data: ITrackData = await Service.getTrackInfo(trackCode);
             if (data.status === 'error') throw new Error(data.message);
 
+            const newTrackHistory: string[] = JSON.parse(localStorage.getItem('TracksHistory')!) || [];
+            if (!newTrackHistory.includes(trackCode)) {
+                newTrackHistory.push(trackCode);
+                localStorage.setItem('TracksHistory', JSON.stringify(newTrackHistory));
+            }
             props.loadTrackInfo(data);
         } catch (e) {
             props.setError(e.message)

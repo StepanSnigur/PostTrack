@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React  from 'react';
 import styled from 'styled-components';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
@@ -15,19 +15,17 @@ const MainWrapper = styled.div`
     box-sizing: border-box;
 `
 
-class App extends Component {
-    render () {
-        return (
-            <MainWrapper>
-                <Router>
-                    <Route path="/" exact component={MainPage}/>
-                    <Route path="/TracksHistory" component={TracksHistoryPage}/>
+const App = () => {
+    return (
+        <MainWrapper>
+            <Router>
+                <Route path="/" exact component={MainPage}/>
+                <Route path="/TracksHistory" component={TracksHistoryPage}/>
 
-                    <Route path="/history/:track" render={({match}) => <TrackPage track={match.params.track} />}/>
-                </Router>
-            </MainWrapper>
-        );
-    }
+                <Route path="/history/:track" render={({match}) => <TrackPage track={match.params.track} />}/>
+            </Router>
+        </MainWrapper>
+    )
 }
 
 export default App;

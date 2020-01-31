@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import TrackContext from '../Context/TrackContext';
 
-import { ITrackEventData, ITrackState, IMainTrackData } from '../Interfaces/Interfaces';
+import { ITrackEventData } from '../Interfaces/Interfaces';
 
 import TrackHeadline from './TrackHeadline';
 import TrackInfoEl from './TrackInfoEl';
@@ -15,36 +16,38 @@ const TrackInfoWrapper = styled.div`
     background: #fff;
 `
 
-interface ITrackInfoList {
-    trackData: IMainTrackData,
-    deliveredStat: ITrackState,
-    id?: string
-}
-
-const TrackInfoList: React.FC<ITrackInfoList> = ({ trackData, deliveredStat, id }) => {
+const TrackInfoList: React.FC = () => {
     return (
-        <>
-            {id && <TrackInfoWrapper>
-            <TrackHeadline
-                fromCountry={trackData.fromCountry}
-                destinationCountry={trackData.destinationCountry}
-                trackUpdateDateTime={trackData.trackUpdateDateTime}
-                itemWeight={trackData.itemWeight}
-                daysInTransit={trackData.daysInTransit}
-                maxDeliveryDays={deliveredStat.maxDeliveryDays}
-            />
+        <TrackContext.Consumer>
             {
-                trackData.events.map((trackState: ITrackEventData) => {
+                value => {
+                    let trackData = value.appState!.trackData!;
                     return (
-                        <TrackInfoEl
-                            key={trackState.id!}
-                            trackEventData={trackState!}
-                        />
+                        trackData.id &&
+                        <TrackInfoWrapper>
+                            <TrackHeadline
+                                fromCountry={trackData.data.fromCountry}
+                                destinationCountry={trackData.data.destinationCountry}
+                                trackUpdateDateTime={trackData.data.trackUpdateDateTime}
+                                itemWeight={trackData.data.itemWeight}
+                                daysInTransit={trackData.data.daysInTransit}
+                                maxDeliveryDays={trackData.deliveredStat.maxDeliveryDays}
+                            />
+                            {
+                                trackData.data.events.map((trackState: ITrackEventData) => {
+                                    return (
+                                        <TrackInfoEl
+                                            key={trackState.id!}
+                                            trackEventData={trackState!}
+                                        />
+                                    )
+                                })
+                            }
+                        </TrackInfoWrapper>
                     )
-                })
+                }
             }
-            </TrackInfoWrapper>}
-        </>
+        </TrackContext.Consumer>
     )
 }
 

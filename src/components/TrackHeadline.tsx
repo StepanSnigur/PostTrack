@@ -16,7 +16,7 @@ const TrackHeadlineWrapper = styled.div`
     }
 `
 
-const TrackHeadline: React.FC<ITrackInfoEl> = (props) => {
+const TrackHeadline: React.FC<Partial<ITrackInfoEl>> = (props) => {
     let {
         fromCountry,
         destinationCountry,

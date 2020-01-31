@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
+import TrackContext from '../Context/TrackContext';
 
 const slide = keyframes`
     0% {
@@ -82,21 +83,24 @@ const PreloaderText = styled.div`
     animation: ${fade} 1s ease 0s infinite;
 `
 
-interface IPreloader {
-    isLoading: boolean
-}
-
-const Preloader: React.FC<IPreloader> = ({ isLoading }) => {
-    return <>{
-        isLoading && <PreloaderContainer>
-            <PreloaderLines>
-                <PreloaderLine1></PreloaderLine1>
-                <PreloaderLine2></PreloaderLine2>
-                <PreloaderLine3></PreloaderLine3>
-            </PreloaderLines>
-            <PreloaderText>ЗАГРУЗКА</PreloaderText>
-        </PreloaderContainer>
-    }</>;
+const Preloader: React.FC = () => {
+    return (
+        <TrackContext.Consumer>
+            {
+                value => (
+                    value.appState!.loading &&
+                    <PreloaderContainer>
+                        <PreloaderLines>
+                            <PreloaderLine1></PreloaderLine1>
+                            <PreloaderLine2></PreloaderLine2>
+                            <PreloaderLine3></PreloaderLine3>
+                        </PreloaderLines>
+                        <PreloaderText>ЗАГРУЗКА</PreloaderText>
+                    </PreloaderContainer>
+                )
+            }
+        </TrackContext.Consumer>
+    )
 }
 
 export default Preloader;

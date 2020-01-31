@@ -2,6 +2,7 @@ import React  from 'react';
 import styled from 'styled-components';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
+import TrackContextProvider from './Context/TrackContextProvider';
 import MainPage from './Pages/MainPage';
 import TracksHistoryPage from './Pages/TracksHistoryPage';
 import TrackPage from './Pages/TrackPage';
@@ -18,12 +19,14 @@ const MainWrapper = styled.div`
 const App = () => {
     return (
         <MainWrapper>
-            <Router>
-                <Route path="/" exact component={MainPage}/>
-                <Route path="/TracksHistory" component={TracksHistoryPage}/>
+            <TrackContextProvider>
+                <Router>
+                    <Route path="/" exact component={MainPage}/>
+                    <Route path="/TracksHistory" component={TracksHistoryPage}/>
 
-                <Route path="/history/:track" render={({match}) => <TrackPage track={match.params.track} />}/>
-            </Router>
+                    <Route path="/history/:track" render={({match}) => <TrackPage track={match.params.track} />}/>
+                </Router>
+            </TrackContextProvider>
         </MainWrapper>
     )
 }

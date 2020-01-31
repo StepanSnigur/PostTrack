@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Service from '../Service/Service';
-
-import { ITrackData } from '../Interfaces/Interfaces';
+import TrackContext from '../Context/TrackContext';
 
 const TrackInputWrapper = styled.form`
     display: flex;
@@ -36,53 +34,33 @@ const TrackInputButton = styled.button`
     cursor: pointer;
 `
 
-interface ITrackCodeInput {
-    loadTrackInfo(trackData: object): void,
-    setLoading(): void,
-    setError(message: string | boolean): void
-}
-
-const TrackCodeInput: React.FC<ITrackCodeInput> = (props) => {
+const TrackCodeInput: React.FC = () => {
     const [trackInputValue, setTrackInputValue] = useState('');
-
-    const getTrackInfo = async (trackCode: string) => {
-        try {
-            props.setLoading();
-            props.setError(false);
-
-            let data: ITrackData = await Service.getTrackInfo(trackCode);
-            if (data.status === 'error') throw new Error(data.message);
-
-            const newTrackHistory: string[] = JSON.parse(localStorage.getItem('TracksHistory')!) || [];
-            if (!newTrackHistory.includes(trackCode)) {
-                newTrackHistory.push(trackCode);
-                localStorage.setItem('TracksHistory', JSON.stringify(newTrackHistory));
-            }
-            props.loadTrackInfo(data);
-        } catch (e) {
-            props.setError(e.message)
-        } finally {
-            props.setLoading();
-        }
-    }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTrackInputValue(e.target.value);
     }
-    const handleSubmit = (e: React.KeyboardEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        getTrackInfo(trackInputValue);
-    }
 
     return (
-        <TrackInputWrapper onSubmit={handleSubmit}>
-            <TrackInput
-                value={trackInputValue}
-                onChange={handleChange}
-                placeholder="Например: RF727913178SG"
-            />
-            <TrackInputButton>Отследить</TrackInputButton>
-        </TrackInputWrapper>
+        <TrackContext.Consumer>
+            {
+                value => (
+                    <TrackInputWrapper
+                        onSubmit={(e: React.KeyboardEvent<HTMLFormElement>) => {
+                            e.preventDefault();
+                            value.getTrackInfo!(trackInputValue);
+                        }}
+                    >
+                        <TrackInput
+                            value={trackInputValue}
+                            onChange={handleChange}
+                            placeholder="Например: RF727913178SG"
+                        />
+                        <TrackInputButton>Отследить</TrackInputButton>
+                    </TrackInputWrapper>
+                )
+            }
+        </TrackContext.Consumer>
     )
 }
 

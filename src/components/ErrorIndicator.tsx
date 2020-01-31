@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import TrackContext from '../Context/TrackContext';
 
 const ErrorMessageWrapper = styled.div`
     display: flex;
@@ -24,22 +25,19 @@ const CloseErrorMessage = styled.button`
     color: #fff;
     cursor: pointer;
 `
-
-interface IErrorIndicator {
-    errorMessage: string | boolean,
-    setError(message: string | boolean): void
-}
-const ErrorIndicator: React.FC<IErrorIndicator> = ({ errorMessage, setError }) => {
+const ErrorIndicator: React.FC = () => {
     return (
-        <>
+        <TrackContext.Consumer>
             {
-                errorMessage &&
-                <ErrorMessageWrapper>
-                    <ErrorMessage>{errorMessage}</ErrorMessage>
-                    <CloseErrorMessage onClick={() => setError(false)}>&#10006;</CloseErrorMessage>
-                </ErrorMessageWrapper>
+                value => (
+                    value.appState!.error &&
+                    <ErrorMessageWrapper>
+                        <ErrorMessage>{value.appState!.error}</ErrorMessage>
+                        <CloseErrorMessage onClick={() => value.setError!(false)}>&#10006;</CloseErrorMessage>
+                    </ErrorMessageWrapper>
+                )
             }
-        </>
+        </TrackContext.Consumer>
     )
 }
 

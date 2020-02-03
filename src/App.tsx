@@ -1,6 +1,6 @@
 import React  from 'react';
 import styled from 'styled-components';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import TrackContextProvider from './Context/TrackContextProvider';
 import MainPage from './Pages/MainPage';
@@ -21,10 +21,12 @@ const App = () => {
         <MainWrapper>
             <TrackContextProvider>
                 <Router>
-                    <Route path="/" exact component={MainPage}/>
-                    <Route path="/TracksHistory" component={TracksHistoryPage}/>
+                    <Switch>
+                        <Route path="/" exact component={MainPage}/>
+                        <Route path="/TracksHistory" component={TracksHistoryPage}/>
 
-                    <Route path="/history/:track" render={({match}) => <TrackPage track={match.params.track} />}/>
+                        <Route path="/history/:track" render={({match}) => <TrackPage track={match.params.track} />}/>
+                    </Switch>
                 </Router>
             </TrackContextProvider>
         </MainWrapper>

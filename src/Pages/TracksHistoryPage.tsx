@@ -50,7 +50,9 @@ const TracksHistoryPage = () => {
     const [historyTracks, setTracksFromHistory] = useState([]);
     const getTracks = useCallback(() => JSON.parse(localStorage.getItem('TracksHistory')!), []);
 
-    useEffect(() => setTracksFromHistory(getTracks() || []), [getTracks]);
+    useEffect(() => {
+        setTracksFromHistory(getTracks() || [])
+    }, [getTracks]);
 
     const cleanTrackHistory = () => {
         setTracksFromHistory([]);

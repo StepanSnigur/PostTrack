@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import TrackContext from '../Context/TrackContext';
 
@@ -17,6 +17,12 @@ const TrackInfoWrapper = styled.div`
 `
 
 const TrackInfoList: React.FC = () => {
+    const trackContext = useContext(TrackContext);
+
+    useEffect(() => {
+        trackContext.setError!(false)
+    }, []);
+
     return (
         <TrackContext.Consumer>
             {
@@ -37,8 +43,8 @@ const TrackInfoList: React.FC = () => {
                                 trackData.data.events.map((trackState: ITrackEventData) => {
                                     return (
                                         <TrackInfoEl
-                                            key={trackState.id!}
-                                            trackEventData={trackState!}
+                                            key={trackState.id}
+                                            trackEventData={trackState}
                                         />
                                     )
                                 })
